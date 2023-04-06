@@ -442,7 +442,7 @@ if __name__ == "__main__":
         design_ranges = [500]
         specific_energies = [450]
 
-        write_logs = False
+        write_logs = True
         if write_logs:
             logging.basicConfig(filename="opt.log", filemode="w", format="%(name)s - %(levelname)s - %(message)s")
         last_successful_opt = None

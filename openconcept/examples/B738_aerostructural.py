@@ -449,5 +449,5 @@ def run_738_optimization(plots=False):
 
 
 if __name__ == "__main__":
-    run_738_analysis(plots=False)
-    # run_738_optimization(plots=True)
+    # run_738_analysis(plots=True)
+    run_738_optimization(plots=True)

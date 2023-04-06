@@ -748,7 +748,7 @@ class RotationPhase(PhaseGroup):
     rolling friction coeff (default 0.03 for accelerating phases and 0.4 for braking)
     propulsor_active (default 1 for v0 to v1, 0 for v1 to vr and braking) to model engine failure
     altitude (fltcond|h)
-    obstacle clearance hight (h_obs) default 35 feet per FAR 25
+    obstacle clearance height (h_obs) default 35 feet per FAR 25
     Rotation CL/CLmax ratio (default 0.83)
 
     The BaseAircraftGroup object is passed in.

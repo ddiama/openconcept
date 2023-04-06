@@ -642,7 +642,7 @@ class SingleTurboPropEmptyWeight(Group):
         self.add_subsystem("empennage", EmpennageWeight_SmallTurboprop(), promotes_inputs=["*"], promotes_outputs=["*"])
         self.add_subsystem("fuselage", FuselageWeight_SmallTurboprop(), promotes_inputs=["*"], promotes_outputs=["*"])
         self.add_subsystem(
-            "nacelle", NacelleWeight_SmallSingleTurboprop(), promotes_inputs=["*"], promotes_outputs=["*"]
+            "nacelle", NacelleWeight_MultiTurboprop(), promotes_inputs=["*"], promotes_outputs=["*"]
         )
         self.add_subsystem("gear", LandingGearWeight_SmallTurboprop(), promotes_inputs=["*"], promotes_outputs=["*"])
         self.add_subsystem(

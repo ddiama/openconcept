@@ -71,7 +71,7 @@ class HybridSingleAisleModel(IntegratorGroup):
         self.connect("hybrid_motor.shaft_power_out", "engine.hybrid_power")
         self.connect("hybrid_throttle.vec", "hybrid_motor.throttle")
         # Add a surrogate model for the engine. Inputs are Mach, Alt, Throttle, Hybrid power
-        self.add_subsystem("engine", N3Hybrid(num_nodes=nn, plot=False), promotes_inputs=["fltcond|*", "throttle"])
+        self.add_subsystem("engine", N3Hybrid(num_nodes=nn, plot=True), promotes_inputs=["fltcond|*", "throttle"])
 
         # double the thrust and fuel flow of the engine and integrate fuel flow
         self.promote_mult("engine.thrust", prom_name="thrust", factor=2.0, vec_size=nn, units="kN")

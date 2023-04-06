@@ -176,3 +176,103 @@ class TwinTurbopropPropulsionSystem(Group):
         self.connect("prop2.component_weight", "prop2_weight")
         self.connect("eng1.component_weight", "eng1_weight")
         self.connect("eng2.component_weight", "eng2_weight")
+
+class TwinTurbopropPropulsionSystem_PT6A67D(Group):
+    """
+    This is an example model multiple constant-speed props and turboshafts.
+    These are two P&W Canada PT6A-67D with 4-bladed propellers used by the Beechcraft 1900D
+
+    Inputs
+    ------
+    ac|propulsion|engine|rating : float
+        The maximum rated shaft power of the engine (scalar, default 850 hp)
+    ac|propulsion|propeller|diameter : float
+        Diameter of the propeller (scalar, default 2.3 m)
+    throttle : float
+        Throttle for the turboshaft (vector)
+    fltcond|rho : float
+        Air density (vector, kg/m**3)
+    fltcond|Utrue : float
+        True airspeed (vector, m/s)
+    propulsor_active : float
+        1 if second propulsor is active or 0 if not (vector)
+
+    Outputs
+    -------
+    thrust : float
+        Thrust force (vector, N)
+    fuel_flow : float
+        Fuel mass flow rate (vector, kg/s)
+
+    Options
+    -------
+    num_nodes : float
+        Number of analysis points to run (default 1)
+    """
+
+    def initialize(self):
+        self.options.declare("num_nodes", default=1, desc="Number of mission analysis points to run")
+
+    def setup(self):
+        nn = self.options["num_nodes"]
+
+        # Introduce turboshaft and propeller components (one for each side)
+        self.add_subsystem(
+            "eng1",
+            SimpleTurboshaft(num_nodes=nn, psfc = 0.53 * 1.68965774e-7, weight_inc=0.24 / 1000, weight_base=233.6),  # http://www.iascanada.com/engmodels.html
+            promotes_inputs=["throttle", ("shaft_power_rating", "ac|propulsion|engine|rating")],
+        )
+        self.add_subsystem(
+            "prop1",
+            SimplePropeller(num_nodes=nn, num_blades=4, design_J=2.12, design_cp=0.55),
+            promotes_inputs=[
+                "fltcond|*",
+                ("power_rating", "ac|propulsion|engine|rating"),
+                ("diameter", "ac|propulsion|propeller|diameter"),
+            ],
+        )
+        self.add_subsystem(
+            "eng2",
+            SimpleTurboshaft(num_nodes=nn, psfc = 0.53 * 1.68965774e-7, weight_inc=0.24 / 1000, weight_base=233.6),
+            promotes_inputs=[("shaft_power_rating", "ac|propulsion|engine|rating")],
+        )
+        self.add_subsystem(
+            "prop2",
+            SimplePropeller(num_nodes=nn, num_blades=4, design_J=2.12, design_cp=0.55),
+            promotes_inputs=[
+                "fltcond|*",
+                ("power_rating", "ac|propulsion|engine|rating"),
+                ("diameter", "ac|propulsion|propeller|diameter"),
+            ],
+        )
+
+        # Set default values for the engine rating and prop diameter
+        self.set_input_defaults("ac|propulsion|engine|rating", 1274.0, units="hp") # 950 kW
+        self.set_input_defaults("ac|propulsion|propeller|diameter", 2.78, units="m")
+
+        # Propulsion models expect a high-level 'throttle' parameter and a 'propulsor_active' flag to set individual throttles
+        failedengine = ElementMultiplyDivideComp()
+        failedengine.add_equation("eng2throttle", input_names=["throttle", "propulsor_active"], vec_size=nn)
+        self.add_subsystem("failedengine", failedengine, promotes_inputs=["throttle", "propulsor_active"])
+        self.connect("failedengine.eng2throttle", "eng2.throttle")
+
+        # Connect components to each other
+        self.connect("eng1.shaft_power_out", "prop1.shaft_power_in")
+        self.connect("eng2.shaft_power_out", "prop2.shaft_power_in")
+
+        # Add up the weights, thrusts and fuel flows
+        add1 = AddSubtractComp(
+            output_name="fuel_flow", input_names=["eng1_fuel_flow", "eng2_fuel_flow"], vec_size=nn, units="kg/s"
+        )
+        add1.add_equation(output_name="thrust", input_names=["prop1_thrust", "prop2_thrust"], vec_size=nn, units="N")
+        add1.add_equation(output_name="engines_weight", input_names=["eng1_weight", "eng2_weight"], units="kg")
+        add1.add_equation(output_name="propellers_weight", input_names=["prop1_weight", "prop2_weight"], units="kg")
+        self.add_subsystem("adder", subsys=add1, promotes_inputs=["*"], promotes_outputs=["*"])
+        self.connect("prop1.thrust", "prop1_thrust")
+        self.connect("prop2.thrust", "prop2_thrust")
+        self.connect("eng1.fuel_flow", "eng1_fuel_flow")
+        self.connect("eng2.fuel_flow", "eng2_fuel_flow")
+        self.connect("prop1.component_weight", "prop1_weight")
+        self.connect("prop2.component_weight", "prop2_weight")
+        self.connect("eng1.component_weight", "eng1_weight")
+        self.connect("eng2.component_weight", "eng2_weight")

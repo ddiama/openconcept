@@ -468,7 +468,7 @@ class FullMissionAnalysis(TrajectoryGroup):
 
         mp = self.add_subsystem("missionparams", om.IndepVarComp(), promotes_outputs=["*"])
         mp.add_output("takeoff|h", val=0.0, units="ft")
-        mp.add_output("cruise|h0", val=28000.0, units="ft")
+        mp.add_output("cruise|h0", val=25000.0, units="ft")
         mp.add_output("mission_range", val=1250.0, units="NM")
         mp.add_output("payload", val=1000.0, units="lbm")
 

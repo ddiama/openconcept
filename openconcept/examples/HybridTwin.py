@@ -208,7 +208,7 @@ class ElectricTwinAnalysisGroup(Group):
 def configure_problem():
     prob = Problem()
     prob.model = ElectricTwinAnalysisGroup()
-    prob.model.nonlinear_solver = NewtonSolver(iprint=1)
+    prob.model.nonlinear_solver = NewtonSolver(iprint=2)
     prob.model.options["assembled_jac_type"] = "csc"
     prob.model.linear_solver = DirectSolver(assemble_jac=True)
     prob.model.nonlinear_solver.options["solve_subsystems"] = True
@@ -352,14 +352,14 @@ if __name__ == "__main__":
 
     else:
         # can run a sweep of design range and spec energy (not tested)
-        # design_ranges = [300,350,400,450,500,550,600,650,700]
-        # specific_energies = [250,300,350,400,450,500,550,600,650,700,750,800]
+        design_ranges = [300,350,400,450,500,550,600,650,700]
+        specific_energies = [250,300,350,400,450,500,550,600,650,700,750,800]
 
         # or a single point
-        design_ranges = [500]
-        specific_energies = [450]
+        # design_ranges = [500]
+        # specific_energies = [450]
 
-        write_logs = False
+        write_logs = True
         if write_logs:
             logging.basicConfig(filename="opt.log", filemode="w", format="%(name)s - %(levelname)s - %(message)s")
         # run a sweep of cases at various specific energies and ranges

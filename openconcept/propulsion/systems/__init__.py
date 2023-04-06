@@ -6,8 +6,9 @@ from .simple_series_hybrid import (
     SeriesHybridElectricPropulsionSystem,
     SingleSeriesHybridElectricPropulsionSystem,
     TwinSeriesHybridElectricPropulsionSystem,
+    TwinSeriesHybridElectricPropulsionSystem_modified,
 )
-from .simple_turboprop import TurbopropPropulsionSystem, TwinTurbopropPropulsionSystem
+from .simple_turboprop import TurbopropPropulsionSystem, TwinTurbopropPropulsionSystem, TwinTurbopropPropulsionSystem_PT6A67D
 from .thermal_series_hybrid import (
     TwinSeriesHybridElectricThermalPropulsionSystem,
     TwinSeriesHybridElectricThermalPropulsionRefrigerated,

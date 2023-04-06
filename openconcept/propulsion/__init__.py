@@ -14,8 +14,10 @@ from .systems import (
     SeriesHybridElectricPropulsionSystem,
     SingleSeriesHybridElectricPropulsionSystem,
     TwinSeriesHybridElectricPropulsionSystem,
+    TwinSeriesHybridElectricPropulsionSystem_modified,
     TurbopropPropulsionSystem,
     TwinTurbopropPropulsionSystem,
+    TwinTurbopropPropulsionSystem_PT6A67D,
     TwinSeriesHybridElectricThermalPropulsionSystem,
     TwinSeriesHybridElectricThermalPropulsionRefrigerated,
 )
