@@ -43,7 +43,7 @@ class VectorConcatenateComp(ExplicitComponent):
             Default is 1 (i.e. a vector of scalars)
         val : float or list or tuple or ndarray
             The initial value of the variable being added in user-defined units. Default is 1.0.
-        **kwargs : str
+        kwargs : str
             Any other arguments to pass to the addition system
             (same as add_output method for ExplicitComponent)
             Examples include units (str or None), desc (str)
@@ -156,7 +156,7 @@ class VectorConcatenateComp(ExplicitComponent):
         """
         Set up the component at run time from both add_relation and __init__.
         """
-        for (output_name, input_names, vec_sizes, length, val, kwargs) in self._add_systems:
+        for output_name, input_names, vec_sizes, length, val, kwargs in self._add_systems:
             if isinstance(input_names, str):
                 input_names = [input_names]
 
@@ -205,7 +205,7 @@ class VectorConcatenateComp(ExplicitComponent):
         outputs : Vector
             unscaled, dimensional output variables read via outputs[key]
         """
-        for (output_name, input_names, _, length, _, _) in self._add_systems:
+        for output_name, input_names, _, length, _, _ in self._add_systems:
             if isinstance(input_names, str):
                 input_names = [input_names]
 
@@ -262,7 +262,7 @@ class VectorSplitComp(ExplicitComponent):
             Default is 1 (i.e. a vector of scalars)
         val : float or list or tuple or ndarray
             The initial value of the variable being added in user-defined units. Default is 1.0.
-        **kwargs : str
+        kwargs : str
             Any other arguments to pass to the addition system
             (same as add_output method for ExplicitComponent)
             Examples include units (str or None), desc (str)
@@ -375,7 +375,7 @@ class VectorSplitComp(ExplicitComponent):
         """
         Set up the component at run time from both add_relation and __init__.
         """
-        for (output_names, input_name, vec_sizes, length, val, kwargs) in self._add_systems:
+        for output_names, input_name, vec_sizes, length, val, kwargs in self._add_systems:
             if isinstance(output_names, str):
                 output_names = [output_names]
 
@@ -423,7 +423,7 @@ class VectorSplitComp(ExplicitComponent):
         outputs : Vector
             unscaled, dimensional output variables read via outputs[key]
         """
-        for (output_names, input_name, vec_sizes, length, _, _) in self._add_systems:
+        for output_names, input_name, vec_sizes, length, _, _ in self._add_systems:
             if isinstance(output_names, str):
                 output_names = [output_names]
 

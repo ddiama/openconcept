@@ -65,7 +65,7 @@ class AddSubtractComp(ExplicitComponent):
             each input (element-wise addition)
         val : float or list or tuple or ndarray
             The initial value of the variable being added in user-defined units. Default is 1.0.
-        **kwargs : str
+        kwargs : str
             Any other arguments to pass to the addition system
             (same as add_output method for ExplicitComponent)
             Examples include units (str or None), desc (str)
@@ -183,7 +183,7 @@ class AddSubtractComp(ExplicitComponent):
         """
         Set up the addition/subtraction system at run time.
         """
-        for (output_name, input_names, vec_size, length, val, scaling_factors, kwargs) in self._add_systems:
+        for output_name, input_names, vec_size, length, val, scaling_factors, kwargs in self._add_systems:
             if isinstance(input_names, str):
                 input_names = [input_names]
 
@@ -250,7 +250,7 @@ class AddSubtractComp(ExplicitComponent):
         outputs : Vector
             unscaled, dimensional output variables read via outputs[key]
         """
-        for (output_name, input_names, vec_size, length, _, scaling_factors, _) in self._add_systems:
+        for output_name, input_names, vec_size, length, _, scaling_factors, _ in self._add_systems:
             if isinstance(input_names, str):
                 input_names = [input_names]
 
